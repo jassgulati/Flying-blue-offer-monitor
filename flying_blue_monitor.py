@@ -84,8 +84,8 @@ for source, url in URLS.items():
     text = soup.get_text(" ", strip=True).lower()
 
     if is_expired(text):
-    print(f"Skipping {source} because page indicates expired/dead offer.")
-    continue
+        print(f"Skipping {source} because page indicates expired/dead offer.")
+        continue
     
     if not card_mentioned(text):
         continue
