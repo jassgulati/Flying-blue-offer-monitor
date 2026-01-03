@@ -56,7 +56,15 @@ def send_sms(body):
     )
 
 for source, url in URLS.items():
-    r = requests.get(url, timeout=15)
+    r = requests.get(
+        url, 
+        timeout=30
+        headers={"User-Agent":"Mozilla/5.0(compatible;OfferMonitor/1.0)"}
+    )
+    r.raise_for_status()
+except request.exceptions.RequestException as e:
+    print (f"Skipping {source} due to request error: {e}")
+    continue
     if r.status_code != 200:
         continue
 
