@@ -34,6 +34,18 @@ def fee_waived(text):
 def card_mentioned(text):
     return any(k in text for k in CARD_KEYWORDS)
 
+def is_expired(text):
+    t = text.lower()
+    return any(x in t for x in [
+        "[expired]",
+        "deal has ended",
+        "offer expired",
+        "no longer available",
+        "expired offer",
+        "this offer has ended",
+        "ended",
+    ])
+
 def send_email(subject, body):
     with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
         server.starttls()
@@ -49,11 +61,12 @@ def send_sms(body):
         os.getenv("TWILIO_SID"),
         os.getenv("TWILIO_TOKEN")
     )
-    client.messages.create(
+    msg = client.messages.create(
         body=body,
         from_=os.getenv("TWILIO_FROM"),
         to=os.getenv("TWILIO_TO")
     )
+    print("Twilio message SID:", msg.sid)
 
 for source, url in URLS.items():
     try:
@@ -70,6 +83,10 @@ for source, url in URLS.items():
     soup = BeautifulSoup(r.text, "html.parser")
     text = soup.get_text(" ", strip=True).lower()
 
+    if is_expired(text):
+    print(f"Skipping {source} because page indicates expired/dead offer.")
+    continue
+    
     if not card_mentioned(text):
         continue
 
