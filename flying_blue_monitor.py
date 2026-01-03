@@ -56,16 +56,15 @@ def send_sms(body):
     )
 
 for source, url in URLS.items():
-    r = requests.get(
-        url, 
-        timeout=30,
-        headers={"User-Agent":"Mozilla/5.0(compatible;OfferMonitor/1.0)"}
-    )
-    r.raise_for_status()
-except request.exceptions.RequestException as e:
-    print (f"Skipping {source} due to request error: {e}")
-    continue
-    if r.status_code != 200:
+    try:
+        r = requests.get(
+            url,
+            timeout=30,
+            headers={"User-Agent": "Mozilla/5.0 (compatible; OfferMonitor/1.0)"}
+        )
+        r.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Skipping {source} due to request error: {e}")
         continue
 
     soup = BeautifulSoup(r.text, "html.parser")
@@ -90,3 +89,5 @@ except request.exceptions.RequestException as e:
     send_email("🚨 Flying Blue 70K+ Offer Detected", message)
     send_sms(message)
     break
+else:
+    print("Checked all sources — no qualifying offer.")
