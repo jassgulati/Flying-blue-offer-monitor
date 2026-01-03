@@ -6,7 +6,7 @@ import smtplib
 from twilio.rest import Client
 
 URLS = {
-    "Doctor of Credit (Tag)": "https://www.doctorofcredit.com/tag/flying-blue/",
+    "Doctor of Credit (Search)": "https://www.doctorofcredit.com/?s=flying+blue",
     "Doctor of Credit (Offer)": "https://www.doctorofcredit.com/bank-of-america-air-france-klm-flyingblue-credit-card-70000-miles-signup-bonus-100-100-xp-bonus/",
     "Flying Blue / KLM": "https://www.klm.com/information/flying-blue/creditcard",
     "Upgraded Points": "https://upgradedpoints.com/news/air-france-klm-credit-card-offer-70k-miles/",
@@ -86,7 +86,7 @@ for source, url in URLS.items():
         f"{url}"
     )
 
-    send_email("🚨 Flying Blue 70K+ Offer Detected", message)
+    send_email("Flying Blue 70K+ Offer Detected", message)
     send_sms(message)
     break
 else:
