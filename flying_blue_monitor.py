@@ -13,7 +13,7 @@ URLS = {
     "Frequent Miler": "https://frequentmiler.com/tag/flying-blue/"
 }
 
-REQUIRED_BONUS = 70000
+REQUIRED_BONUS = 50000
 CARD_KEYWORDS = ["flying blue", "air france", "klm"]
 
 SMTP_SERVER = "smtp.gmail.com"
